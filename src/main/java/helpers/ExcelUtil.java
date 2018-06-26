@@ -132,7 +132,7 @@ public class ExcelUtil {
         System.out.println("sequence number used for file name is " + sequenceNumber);
 
         // concatenates the filename
-        String generatedFileName = newDate + sequenceNumber + "-" + SharedInfo.env + "-jupiterTesting-" + SharedInfo.testName + ".csv";
+        String generatedFileName = newDate + sequenceNumber + "-" + SharedInfo.env + "-" + SharedInfo.projectName + "-" + SharedInfo.testName + ".csv";
 
         // writes the used date along with the sequence number into dateTracker.csv
         File fileOut = new File(testDataExcelPath + SharedInfo.dateTrackerFileName);
@@ -175,6 +175,7 @@ public class ExcelUtil {
             testDataExcelPath = currentDir + SharedInfo.testDataInternalPathWIN;
             testResultsFilePath = currentDir + SharedInfo.testResultsInternalPathWIN;
         }
+
         try {
             //setting up access to the testData file, also counting how many test accounts there are
             FileInputStream dataFIS = new FileInputStream(testDataExcelPath + SharedInfo.testDataExcelFileName);
@@ -182,17 +183,22 @@ public class ExcelUtil {
             testDataWSheet = testDataWBook.getSheet("Sheet1");
             SharedInfo.credentialsCount = testDataWSheet.getLastRowNum() + 1;
             System.out.println("row count = " + SharedInfo.credentialsCount);
-
-            //setting up the results spreadsheet
-            testResultsExcelFileName = generateFileName();
-            csvFile = testResultsFilePath + testResultsExcelFileName;
-            csvHeader = WriteCsvHeader(new String[]{"Time", "Test Feature", "Status", "Comments"});
         } catch (Exception e) {
             try {
                 throw (e);
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
+        }
+
+        try {
+            //setting up the results spreadsheet
+            testResultsExcelFileName = generateFileName();
+            csvFile = testResultsFilePath + testResultsExcelFileName;
+            System.out.println("csvFile =  " + csvFile);
+            csvHeader = WriteCsvHeader(new String[]{"Time", "Test Feature", "Status", "Comments"});
+        } catch (Exception e) {
+            throw (e);
         }
     }
 
@@ -271,6 +277,7 @@ public class ExcelUtil {
                 e.printStackTrace();
             }
         }
+        System.out.println("file absolute path = " + file.getAbsoluteFile());
         FileWriter fw = new FileWriter(file.getAbsoluteFile());
         BufferedWriter bw = new BufferedWriter(fw);
         bw.write(fileContent);

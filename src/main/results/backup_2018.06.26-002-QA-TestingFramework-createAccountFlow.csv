@@ -1,0 +1,9 @@
+Time,Test Feature,Status,Comments
+17:09:27,,,Begin executing Suite: Default Suite
+17:09:27,,,Begin executing Test: TestArtifact
+17:09:27,,,Before Invocation of method: setUp
+17:09:27,,,After Invocation of method: setUp
+17:09:27,,,Test Status: extendBaseFlow
+17:09:27,,,Before Invocation of method: extendBaseFlow
+17:09:33,createAccountFlow,,After Invocation of method: extendBaseFlow
+17:09:33,createAccountFlow,fail,Test Status:: extendBaseFlow

@@ -3,6 +3,7 @@ package helpers;
 public class SharedInfo {
     //things you might want to change
     public static final String env = "QA";
+    public static final String projectName = "TestingFramework";
     public static final String receivingEmail = "jwong@konradgroup.com";
     public static final String fakePhoneNumber = "4161234567";
     public static final String firstName = "Jackson";
@@ -29,9 +30,8 @@ public class SharedInfo {
 // To Do:
 // - add dependencies so they can be easily loaded
 // - add instructions on how to add dependencies
-
-
-
+// - before invocation is causing some kind of issue when I'm finishing a test, we're generating a file before I actually want to do so
+// - also I need to write out the actual errors when failure happens, right now it's just writing out it failed and which method
 
 // Instructions:
 // - add dependencies
