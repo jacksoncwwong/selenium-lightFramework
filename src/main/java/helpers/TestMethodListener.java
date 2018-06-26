@@ -43,7 +43,8 @@ public class TestMethodListener implements ITestListener, ISuiteListener, IInvok
     // ITestListener and will execute only on the event of fail test
     @Override
     public void onTestFailure(ITestResult arg0) {
-        BaseTest.writeData(SharedInfo.testName, "fail", "Test Status:: " + arg0.getName());
+        BaseTest.writeData(SharedInfo.testName, "fail", "Test Status: " + arg0.getName());
+        BaseTest.writeData(SharedInfo.testName, "fail", "Test Context: " + arg0.getTestContext());
         BaseTest.writeReport();
     }
 

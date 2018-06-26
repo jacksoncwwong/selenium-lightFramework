@@ -32,6 +32,8 @@ public class SharedInfo {
 // - add instructions on how to add dependencies
 // - before invocation is causing some kind of issue when I'm finishing a test, we're generating a file before I actually want to do so
 // - also I need to write out the actual errors when failure happens, right now it's just writing out it failed and which method
+// - added "context" to what's being written in my csv, but that turns out to not be what I'm looking for
+
 
 // Instructions:
 // - add dependencies
