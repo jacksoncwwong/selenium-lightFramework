@@ -117,6 +117,7 @@ public class BaseTest {
             getDriver().get(SharedInfo.qaUrl);
             loginUser = ExcelUtil.getCellData(1, 2);
             loginPwd = ExcelUtil.getCellData(1, 3);
+
         }
         else if (env == "UAT") {
             getDriver().get(SharedInfo.uatUrl);

@@ -15,6 +15,6 @@ public class ExtendBase extends BaseTest {
         ExcelUtil.setTestExcelData();
         setupEnv("");
 
-//        Assert.assertTrue(false);
+        Assert.assertTrue(false);
     }
 }

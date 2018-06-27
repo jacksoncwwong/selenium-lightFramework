@@ -1,0 +1,11 @@
+Time,Test Feature,Status,Comments
+14:45:59,,,Begin executing Suite: Default Suite
+14:46:00,,,Begin executing Test: TestArtifact
+14:46:00,,,Before Invocation of method: setUp
+14:46:00,,,After Invocation of method: setUp
+14:46:00,,,Test Status: extendBaseFlow
+14:46:00,,,Before Invocation of method: extendBaseFlow
+14:46:05,extendBaseFlow,,After Invocation of method: extendBaseFlow
+14:46:05,extendBaseFlow,fail,Test Status: extendBaseFlow
+14:46:05,extendBaseFlow,fail,Test Context: org.testng.TestRunner@7ac0e420
+14:46:05,,,Before Invocation of method: wrapUp

@@ -1,0 +1,13 @@
+Time,Test Feature,Status,Comments
+14:58:27,,,Begin executing Suite: Default Suite
+14:58:27,,,Begin executing Test: TestArtifact
+14:58:27,,,Before Invocation of method: setUp
+14:58:27,,,After Invocation of method: setUp
+14:58:27,,,Test Status: extendBaseFlow
+14:58:27,,,Before Invocation of method: extendBaseFlow
+14:58:33,,,Environment is QA and sponsor not specified
+14:58:33,extendBaseFlow,,After Invocation of method: extendBaseFlow
+14:58:33,extendBaseFlow,fail,Test Status: extendBaseFlow
+14:58:33,extendBaseFlow,fail,Test Context: org.testng.TestRunner@710b18a6
+14:58:33,extendBaseFlow,fail,Test Throwable: java.lang.AssertionError: expected [true] but found [false]
+14:58:33,,,Before Invocation of method: wrapUp

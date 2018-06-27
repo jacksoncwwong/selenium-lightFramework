@@ -1,5 +1,6 @@
 package helpers;
 
+import com.google.common.base.Throwables;
 import org.testng.IInvokedMethod;
 import org.testng.IInvokedMethodListener;
 import org.testng.ISuite;
@@ -7,6 +8,9 @@ import org.testng.ISuiteListener;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
+
+import java.io.StringWriter;
+import java.io.PrintWriter;
 
 public class TestMethodListener implements ITestListener, ISuiteListener, IInvokedMethodListener {
 
@@ -45,7 +49,11 @@ public class TestMethodListener implements ITestListener, ISuiteListener, IInvok
     public void onTestFailure(ITestResult arg0) {
         BaseTest.writeData(SharedInfo.testName, "fail", "Test Status: " + arg0.getName());
         BaseTest.writeData(SharedInfo.testName, "fail", "Test Context: " + arg0.getTestContext());
-        BaseTest.writeReport();
+        Throwable test = arg0.getThrowable();
+        String stackTraceString = Throwables.getStackTraceAsString(test);
+        stackTraceString = stackTraceString.replace("\n", "\n,,,");
+        BaseTest.writeData(SharedInfo.testName, "fail", "Test Throwable: " + stackTraceString);
+//        BaseTest.writeReport();
     }
 
     // ITestListener and will execute before the main test start (@Test)
@@ -58,7 +66,12 @@ public class TestMethodListener implements ITestListener, ISuiteListener, IInvok
     @Override
     public void onTestSkipped(ITestResult arg0) {
         BaseTest.writeData(SharedInfo.testName, "skipped", "Test Status: " + arg0.getName());
-        BaseTest.writeReport();
+        BaseTest.writeData(SharedInfo.testName, "skipped", "Test Context: " + arg0.getTestContext());
+        Throwable test = arg0.getThrowable();
+        String stackTraceString = Throwables.getStackTraceAsString(test);
+        stackTraceString = stackTraceString.replace("\n", "\n,,,");
+        BaseTest.writeData(SharedInfo.testName, "skipped", "Test Throwable: " + stackTraceString);
+//        BaseTest.writeReport();
     }
 
     // IInvokedMethodListener and will execute before every method including
@@ -78,7 +91,13 @@ public class TestMethodListener implements ITestListener, ISuiteListener, IInvok
     // ITestListener method and Success Percentage
     @Override
     public void onTestFailedButWithinSuccessPercentage(ITestResult result) {
-        BaseTest.writeData(SharedInfo.testName, "", "onTestFailedButWithinSuccessPercentage: " + result.getTestName());
-        BaseTest.writeReport();
+        BaseTest.writeData(SharedInfo.testName, "within percentage", "onTestFailedButWithinSuccessPercentage: " + result.getTestName());
+        BaseTest.writeData(SharedInfo.testName, "within percentage", "Test Status: " + result.getName());
+        BaseTest.writeData(SharedInfo.testName, "within percentage", "Test Context: " + result.getTestContext());
+        Throwable test = result.getThrowable();
+        String stackTraceString = Throwables.getStackTraceAsString(test);
+        stackTraceString = stackTraceString.replace("\n", "\n,,,");
+        BaseTest.writeData(SharedInfo.testName, "within percentage", "Test Throwable: " + stackTraceString);
+//        BaseTest.writeReport();
     }
 }
