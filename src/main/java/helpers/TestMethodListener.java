@@ -9,9 +9,6 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
-import java.io.StringWriter;
-import java.io.PrintWriter;
-
 public class TestMethodListener implements ITestListener, ISuiteListener, IInvokedMethodListener {
 
     // ISuiteListener and will execute before the Suite start
