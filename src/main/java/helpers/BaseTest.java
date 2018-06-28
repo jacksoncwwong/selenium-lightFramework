@@ -47,7 +47,6 @@ public class BaseTest {
 
     @AfterClass
     public void wrapUp(){
-//        logoutFlow();
         writeReport();
     }
 
@@ -113,24 +112,24 @@ public class BaseTest {
         String env = SharedInfo.env;
 
         //we set the url depending on environment with the if statement below, we also preset the login credentials
-        if (env == "QA") {
+        if ( env.equals("QA") ) {
             getDriver().get(SharedInfo.qaUrl);
             loginUser = ExcelUtil.getCellData(1, 2);
             loginPwd = ExcelUtil.getCellData(1, 3);
 
         }
-        else if (env == "UAT") {
+        else if ( env.equals("UAT") ) {
             getDriver().get(SharedInfo.uatUrl);
             loginUser = ExcelUtil.getCellData(12, 2);
             loginPwd = ExcelUtil.getCellData(12, 3);
         }
-        else if (env == "PROD") {
+        else if ( env.equals("PROD") ) {
             getDriver().get(SharedInfo.prodUrl);
             loginUser = ExcelUtil.getCellData(13, 2);
             loginPwd = ExcelUtil.getCellData(13, 3);
         }
 
-        if (sponsor == "") {
+        if ( sponsor.equals("") ) {
             writeData("", "", "Environment is " + env + " and sponsor not specified");
 
         }
