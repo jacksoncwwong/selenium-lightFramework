@@ -47,6 +47,7 @@ public class BaseTest {
 
     @AfterClass
     public void wrapUp(){
+        //may want a logout function here
         writeReport();
     }
 
@@ -72,6 +73,8 @@ public class BaseTest {
         }
     }
 
+    //generic function for a short and long waits
+    //this way we standardize all waits and can change it all in one place
     public static void shortWait() {
         try {
             Thread.sleep(1000);
@@ -79,7 +82,6 @@ public class BaseTest {
             e.printStackTrace();
         }
     }
-
     public static void longWait() {
         try {
             Thread.sleep(5000);
@@ -88,6 +90,8 @@ public class BaseTest {
         }
     }
 
+    //used in conjunction with the waitForElementToBeGone method
+    //to wait out a spinner so that you don't just fail assertions or clicks because the spinner is blocking
     public static boolean isElementDisplayed(WebElement element) {
         try {
             WebDriverWait spinnerWait = new WebDriverWait(getDriver(), 1);
@@ -109,41 +113,69 @@ public class BaseTest {
     public static String loginUser = "";
     public static String loginPwd = "";
     public static void setupEnv(String sponsor) {
-        String env = SharedInfo.env;
-
         //we set the url depending on environment with the if statement below, we also preset the login credentials
-        if ( env.equals("QA") ) {
+        if (SharedInfo.env.equals("QA")) {
             getDriver().get(SharedInfo.qaUrl);
-            loginUser = ExcelUtil.getCellData(1, 2);
-            loginPwd = ExcelUtil.getCellData(1, 3);
-
+            writeData("", "", "Url is " + SharedInfo.qaUrl);
         }
-        else if ( env.equals("UAT") ) {
+        else if (SharedInfo.env.equals("UAT")) {
             getDriver().get(SharedInfo.uatUrl);
-            loginUser = ExcelUtil.getCellData(12, 2);
-            loginPwd = ExcelUtil.getCellData(12, 3);
+            writeData("", "", "Url is " + SharedInfo.uatUrl);
         }
-        else if ( env.equals("PROD") ) {
+        else if (SharedInfo.env.equals("PROD")) {
             getDriver().get(SharedInfo.prodUrl);
-            loginUser = ExcelUtil.getCellData(13, 2);
-            loginPwd = ExcelUtil.getCellData(13, 3);
+            writeData("", "", "Url is " + SharedInfo.prodUrl);
         }
 
-        if ( sponsor.equals("") ) {
-            writeData("", "", "Environment is " + env + " and sponsor not specified");
-
-        }
-        else { // if a sponsor is specified we then reset the login credentials with the sponsor in mind
+        //if sponsor is empty then we skip all the sponsor logic, and just match environment
+        if (sponsor.equals("")) {
+            writeData("", "", "Environment is " + SharedInfo.env + " and sponsor not specified");
             for (int i = 0; i < SharedInfo.credentialsCount; i++) {
                 String testEnv = ExcelUtil.getCellData(i, 0);
                 String testSponsor = ExcelUtil.getCellData(i, 1);
-                if (testEnv == env && testSponsor == sponsor) {
-                    loginUser = ExcelUtil.getCellData(i, 2);
-                    loginPwd = ExcelUtil.getCellData(i, 3);
-                }
-                writeData("", "", "Environment is " + env + " and the sponsor is " + sponsor);
 
+                //only need to match environment
+                if (testEnv.equals(SharedInfo.env)) {
+                    loginUser = ExcelUtil.getCellData(i, 3);
+                    loginPwd = ExcelUtil.getCellData(i, 4);
+                    writeData("", "", "credential match WITHOUT tier OR sponsor info provided");
+                    break;
+                }
             }
+        }
+        else { // if a sponsor is specified we then reset the login credentials with the sponsor in mind
+            // assigning the shared variable currentSponsor as the sponsor provided
+            SharedInfo.currentSponsor = sponsor;
+
+            // loop to go through spreadsheet per row to find the a match of sponsor and environment (optionally checking tier)
+            for (int i = 0; i < SharedInfo.credentialsCount; i++) {
+                String testEnv = ExcelUtil.getCellData(i, 0);
+                String testSponsor = ExcelUtil.getCellData(i, 1);
+                String testTier = ExcelUtil.getCellData(i, 2);
+
+                //this if statement will check if currentTier is empty (meaning tier is not required)
+                if (SharedInfo.currentTier.equals("")) {
+                    //if tier info is not required then we just match env and sponsor
+                    if (testEnv.equals(SharedInfo.env) && testSponsor.equals(sponsor)) {
+                        loginUser = ExcelUtil.getCellData(i, 3);
+                        loginPwd = ExcelUtil.getCellData(i, 4);
+                        writeData("", "", "credential match WITHOUT tier info found");
+                        break;
+                    }
+                }
+                else {
+                    //given that currentTier is not empty, we'll have to match for that too here
+                    if ( testEnv.equals(SharedInfo.env) && testSponsor.equals(sponsor) && testTier.equals(SharedInfo.currentTier) ) {
+                        loginUser = ExcelUtil.getCellData(i, 3);
+                        loginPwd = ExcelUtil.getCellData(i, 4);
+                        writeData("", "", "credential match with tier info found");
+                        break;
+                    }
+                }
+                //probably a better way to write this, but the main concern I had was to make sure if a tier is specified then we must find one with the correct tier
+                //I wrote this another way before and the logic was flawed, if tier didn't match, the following if statement just tests whether sponsor and env match and would take that, ignoring the tier requirement
+            }
+            writeData("", "", "Environment is " + SharedInfo.env + " the sponsor is " + sponsor + " and the credentials used are " + loginUser + "/" + loginPwd);
         }
     }
 }

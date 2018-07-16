@@ -25,6 +25,8 @@ public class SharedInfo {
     public static final String testResultsInternalPathWIN = "\\src\\main\\results\\";;
     public static final String COMMA_DELIMITER = ",";
     public static String testName = "";
+    public static String currentSponsor = "";
+    public static String currentTier = "";
 }
 
 // To Do:
