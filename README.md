@@ -1,17 +1,23 @@
 # selenium-lightFramework
-a light set of functions that will generate csv files for test results, read test data off excel file, and test using TestNG
+A light set of functions that will generate csv files for test results, read test data off Excel files, and test using TestNG.
 
 ## Instructions
 ### Quick Intro
-For the most part this is meant to help with reporting for automated tests. I want to start by mentioning that there are other reporting tools, such as [ReportNG](https://reportng.uncommons.org/), [Maven SureFire plugin](https://maven.apache.org/surefire/maven-surefire-report-plugin/), [ExtentReport](http://extentreports.com/) just to name a few. You may be wondering: "If there were others already, why did you do this?" and I would say that's a great question. **_Was it in-part due to the fact that I started writing this before I found out about these alternatives?_** ~YES~Perhaps... However, I decided to continue finishing this framework because there were just things I didn't really like in the alternatives I found: some of them I had a tough time getting to work, others didn't really have features that I felt were needed etc.
+For the most part this is meant to help with reporting for automated tests. I want to start by mentioning that there are other reporting tools, such as [ReportNG](https://reportng.uncommons.org/), [Maven SureFire plugin](https://maven.apache.org/surefire/maven-surefire-report-plugin/), [ExtentReport](http://extentreports.com/) just to name a few. You may be wondering: "If there were others already, why did you do this?" and I would say that's a great question. 
+
+**_Was it in-part due to the fact that I started writing this before I found out about these alternatives?_** ~YES~Perhaps... 
+
+However, I decided to continue finishing this framework because there were just things I didn't really like in the alternatives I found: some of them I had a tough time getting to work, others didn't really have features that I felt were needed etc.
 
 ### Using Page Object Model
-This is written with the assumption that you're working with Page Object Model. If that term is new to you please feel free to look it up, but for the most part this just means that you have a file for every page which grabs all the elements you need to use, and you have a separate file that will utilize these elements and test their functionality. The biggest advantage I see for Page Object Model is the ease of refactoring if these elements have changed. Since the management of these elements are all in one place, you only have to make these changes one time. Otherwise, you'd have to go into every test that is affected by the change and update the xpath/selectors.
+This is written with the assumption that you're working with Page Object Model(POM). There are many resources online that will explain what POM is, but for the most part this just means that you have a file for every page which grabs all the elements, and you have a separate file that will utilize these elements and test their functionality. 
+
+One big advantage of POM is of course the ease of refactoring if these elements have changed. Since the management of these elements are organized by page, and all in one place, making changes are easy and non-repetitive. If you don't have a centralized place for all your elements, you'd have to go into every test that is affected by the change and update the xpath/selectors which is a major pain.
 
 ### Why read Excel but write to csv?
 This is because I don't currently have a paid version of Excel and am too lazy to ask for one. This also made me realize that there are likely others stuck in my predicament, and I don't see any significant downside therefore I rolled with it. From my personal experience I'm still able to read excel files but can't save or write them, and writing to csv is free (and really we're just writing out a log, we don't need anything fancy).
 
-The major downside here is that comments in the logs cannot contain commas, or should refrain from using commas since it would cause what comes after the comma to be in the next cell (cuz comma separated values).
+The major downside here is that comments in the logs cannot contain commas, or should refrain from using commas since it would cause what comes after the comma to be in the next cell (CSV = comma separated values afterall).
 
 ### How to use this?
 For the most part, you just need to download this and you can start writing tests within the "tests" directory and page objects within the "pages" directory. Refer to the sample test I wrote called ExtendBase.java, basically you need to follow the basic structure of extending BaseTest, starting with @Test, and naming your method within the class:
@@ -77,7 +83,7 @@ This is a csv file I use to keep track of the date and sequence number last used
 This is a sample spreadsheet of how I organize login credentials. If the current structure works for you then you can use as is (if you don't need a sub category for your users like "Sponsor" then just leave that blank). If you end up changing the order of columns then you'll have to update the setupEnv() method in the BaseTest.java file from Helpers folder. I was lazy and it currently grabs username and password just based on the column number I wrote in, I will update this in the future and have it read the column header to know what it's reading.
 
 ## Methods
-There are a number of pre-written methods/functions in here. Some are written by me, most are just copied and refactored to fit what I'm trying to do, I will do my best here to explain what each is for:
+There are a number of pre-written methods/functions in here. Few are written by me, most are just copied and refactored to fit what I'm trying to do, I will do my best here to explain what each is for:
 
 ### BaseTest.java
 This class contains methods that are commonly used for almost every test.
