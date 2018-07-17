@@ -16,6 +16,7 @@ public class ExtendBase extends BaseTest {
         ExcelUtil.setTestExcelData();
         setupEnv("");
 
+        //start writing your test from here, the line below is just something to trigger a failure, please remember to remove when writing your own test
         Assert.assertTrue(false);
     }
 }
