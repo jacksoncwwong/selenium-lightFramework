@@ -67,6 +67,7 @@ public class BaseTest {
 
         if( status.equals("fail") || status.equals("skipped") ) {
             SharedInfo.testFailChecker = true;
+            System.out.println("failure detected");
         }
         //regardless we will insert the timestamp into our results
         ExcelUtil.WriteCsvRecords(new String[]{timeString, feature, status, comments});
@@ -74,15 +75,20 @@ public class BaseTest {
 
     public static void writeReport() {
         ExcelUtil.testResultsExcelFileName = ExcelUtil.generateFileName();
-        ExcelUtil.csvFile = ExcelUtil.testResultsFilePath + ExcelUtil.testResultsExcelFileName;
-        System.out.println("csvFile =  " + ExcelUtil.csvFile);
 
         if (SharedInfo.testFailChecker == true) {
             ExcelUtil.testResultsExcelFileName = ExcelUtil.testResultsExcelFileName + "-FAIL";
+            System.out.println("FAIL added to file name, new name is " + ExcelUtil.testResultsExcelFileName);
         }
 
+        ExcelUtil.testResultsExcelFileName = ExcelUtil.testResultsExcelFileName + ".csv";
+        System.out.println(ExcelUtil.testResultsExcelFileName);
+
+        ExcelUtil.csvFile = ExcelUtil.testResultsFilePath + ExcelUtil.testResultsExcelFileName;
+        System.out.println("csvFile =  " + ExcelUtil.csvFile);
+
         try {
-            ExcelUtil.WriteToFile(ExcelUtil.csvHeader + ExcelUtil.csvRecords.toString(), ExcelUtil.testResultsExcelFileName + ".csv");
+            ExcelUtil.WriteToFile(ExcelUtil.csvHeader + ExcelUtil.csvRecords.toString(), ExcelUtil.testResultsExcelFileName);
             //resetting testFailChecker after results are written
         } catch (Exception e) {
             try {
