@@ -65,9 +65,10 @@ public class BaseTest {
             System.out.println("Time: " + timeString + " Test Feature: " + feature + " Status: " + status + " Comments: " + comments);
         }
 
+        //if statement to check if something has failed or been skipped, and if so we update testFailChecker
         if( status.equals("fail") || status.equals("skipped") ) {
             SharedInfo.testFailChecker = true;
-            System.out.println("failure detected");
+//            System.out.println("failure detected");
         }
         //regardless we will insert the timestamp into our results
         ExcelUtil.WriteCsvRecords(new String[]{timeString, feature, status, comments});
@@ -78,14 +79,14 @@ public class BaseTest {
 
         if (SharedInfo.testFailChecker == true) {
             ExcelUtil.testResultsExcelFileName = ExcelUtil.testResultsExcelFileName + "-FAIL";
-            System.out.println("FAIL added to file name, new name is " + ExcelUtil.testResultsExcelFileName);
+//            System.out.println("FAIL added to file name, new name is " + ExcelUtil.testResultsExcelFileName);
         }
 
         ExcelUtil.testResultsExcelFileName = ExcelUtil.testResultsExcelFileName + ".csv";
-        System.out.println(ExcelUtil.testResultsExcelFileName);
+//        System.out.println(ExcelUtil.testResultsExcelFileName);
 
         ExcelUtil.csvFile = ExcelUtil.testResultsFilePath + ExcelUtil.testResultsExcelFileName;
-        System.out.println("csvFile =  " + ExcelUtil.csvFile);
+//        System.out.println("csvFile =  " + ExcelUtil.csvFile);
 
         try {
             ExcelUtil.WriteToFile(ExcelUtil.csvHeader + ExcelUtil.csvRecords.toString(), ExcelUtil.testResultsExcelFileName);
@@ -154,16 +155,54 @@ public class BaseTest {
             writeData("", "", "Url is " + SharedInfo.prodUrl);
         }
 
+        //we initialize the column numbers based on how I know they're structured
+        int environmentColumnNumber = 0;
+        int sponsorColumnNumber = 1;
+        int tierColumnNumber = 2;
+        int loginUserColumnNumber = 3;
+        int loginPwdColumnNumber = 4;
+        String testCell = "not blank";
+        int cellCount = 0;
+
+        //we also run a loop to update the column numbers if they are incorrect
+        //this only works if you use the same headings of course
+        while(!testCell.equals("")) {
+            testCell = ExcelUtil.getCellData(0, cellCount);
+
+            if (testCell.equals("Environment")) {
+                environmentColumnNumber = cellCount;
+                System.out.println("environmentColumnNumber is " + environmentColumnNumber);
+            }
+            else if (testCell.equals("Sponsor")) {
+                sponsorColumnNumber = cellCount;
+                System.out.println("sponsorColumnNumber is " + sponsorColumnNumber);
+            }
+            else if (testCell.equals("Tier")) {
+                tierColumnNumber = cellCount;
+                System.out.println("tierColumnNumber is " + tierColumnNumber);
+            }
+            else if (testCell.equals("loginUser")) {
+                loginUserColumnNumber = cellCount;
+                System.out.println("loginUserColumnNumber is " + loginUserColumnNumber);
+            }
+            else if (testCell.equals("loginPwd")) {
+                loginPwdColumnNumber = cellCount;
+                System.out.println("loginPwdColumnNumber is " + loginPwdColumnNumber);
+            }
+
+            cellCount++;
+        }
+
         //if sponsor is empty then we skip all the sponsor logic, and just match environment for credentials
         if (sponsor.equals("")) {
             writeData("", "", "Environment is " + SharedInfo.env + " and sponsor not specified");
             for (int i = 0; i < SharedInfo.credentialsCount; i++) {
-                String testEnv = ExcelUtil.getCellData(i, 0);
+                String testEnv = ExcelUtil.getCellData(i, environmentColumnNumber);
 
                 //only need to match environment
                 if (testEnv.equals(SharedInfo.env)) {
-                    loginUser = ExcelUtil.getCellData(i, 3);
-                    loginPwd = ExcelUtil.getCellData(i, 4);
+                    loginUser = ExcelUtil.getCellData(i, loginUserColumnNumber);
+                    loginPwd = ExcelUtil.getCellData(i, loginPwdColumnNumber);
                     writeData("", "", "credential match WITHOUT tier OR sponsor info provided");
                     writeData("", "", "username is " + loginUser + " and password is " + loginPwd);
                     break;
@@ -176,16 +215,16 @@ public class BaseTest {
 
             // loop to go through spreadsheet per row to find the a match of sponsor and environment (optionally checking tier)
             for (int i = 0; i < SharedInfo.credentialsCount; i++) {
-                String testEnv = ExcelUtil.getCellData(i, 0);
-                String testSponsor = ExcelUtil.getCellData(i, 1);
-                String testTier = ExcelUtil.getCellData(i, 2);
+                String testEnv = ExcelUtil.getCellData(i, environmentColumnNumber);
+                String testSponsor = ExcelUtil.getCellData(i, sponsorColumnNumber);
+                String testTier = ExcelUtil.getCellData(i, tierColumnNumber);
 
                 //this if statement will check if currentTier is empty (meaning tier is not required)
                 if (SharedInfo.currentTier.equals("")) {
                     //if tier info is not required then we just match env and sponsor
                     if (testEnv.equals(SharedInfo.env) && testSponsor.equals(sponsor)) {
-                        loginUser = ExcelUtil.getCellData(i, 3);
-                        loginPwd = ExcelUtil.getCellData(i, 4);
+                        loginUser = ExcelUtil.getCellData(i, loginUserColumnNumber);
+                        loginPwd = ExcelUtil.getCellData(i, loginPwdColumnNumber);
                         writeData("", "", "credential match WITHOUT tier info found");
                         break;
                     }
@@ -193,8 +232,8 @@ public class BaseTest {
                 else {
                     //given that currentTier is not empty, we'll have to match for that too here
                     if ( testEnv.equals(SharedInfo.env) && testSponsor.equals(sponsor) && testTier.equals(SharedInfo.currentTier) ) {
-                        loginUser = ExcelUtil.getCellData(i, 3);
-                        loginPwd = ExcelUtil.getCellData(i, 4);
+                        loginUser = ExcelUtil.getCellData(i, loginUserColumnNumber);
+                        loginPwd = ExcelUtil.getCellData(i, loginPwdColumnNumber);
                         writeData("", "", "credential match with tier info found");
                         break;
                     }

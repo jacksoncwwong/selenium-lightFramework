@@ -18,5 +18,16 @@ public class ExtendBase extends BaseTest {
 
         //start writing your test from here, the line below is just something to trigger a failure, please remember to remove when writing your own test
         Assert.assertTrue(false);
+
+        //below is an example of logging in
+//        LandingPage.signInBtn.click();
+//
+//        shortWait();
+//
+//        writeData("", "", "loginUser is " + loginUser);
+//        writeData("", "", "loginPwd is " + loginPwd);
+//
+//        SignInPage.signInIDInput.sendKeys(loginUser);
+//        SignInPage.signInPwdInput.sendKeys(loginPwd);
     }
 }
