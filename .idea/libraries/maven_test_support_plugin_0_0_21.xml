@@ -1,9 +1,6 @@
 <component name="libraryTable">
   <library name="maven-test-support-plugin-0.0.21">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/maven-test-support-plugin-0.0.21.jar!/" />
-      <root url="jar://$PROJECT_DIR$/reportng-1.1.4.jar!/" />
-    </CLASSES>
+    <CLASSES />
     <JAVADOC />
     <SOURCES />
   </library>
