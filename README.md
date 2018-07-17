@@ -5,7 +5,9 @@ A light set of functions that will generate csv files for test results, read tes
 ### Quick Intro
 For the most part this is meant to help with reporting for automated tests. I want to start by mentioning that there are other reporting tools, such as [ReportNG](https://reportng.uncommons.org/), [Maven SureFire plugin](https://maven.apache.org/surefire/maven-surefire-report-plugin/), [ExtentReport](http://extentreports.com/) just to name a few. You may be wondering: "If there were others already, why did you do this?" and I would say that's a great question. 
 
-**_Was it in-part due to the fact that I started writing this before I found out about these alternatives?_** ~YES~Perhaps... 
+**_Was it in-part due to the fact that I started writing this before I found out about these alternatives?_** 
+
+~YES~ Perhaps... 
 
 However, I decided to continue finishing this framework because there were just things I didn't really like in the alternatives I found: some of them I had a tough time getting to work, others didn't really have features that I felt were needed etc.
 
