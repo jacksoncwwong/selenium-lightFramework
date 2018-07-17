@@ -57,7 +57,7 @@ public class BaseTest {
         Date time = new Date();
         String timeString = timeFormat.format(time);
 
-        //the if/else statement is just so that we don't clutter the system print logs
+        //if we're just writing a comment, the if/else statement helps so we don't clutter the system print logs
         if(feature.equals("") && status.equals("")) {
             System.out.println("Comments: " + comments);
         }
