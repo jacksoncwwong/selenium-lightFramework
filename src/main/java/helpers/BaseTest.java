@@ -24,6 +24,7 @@ public class BaseTest {
 
     static WebDriverWait wait = new WebDriverWait(getDriver(), 60);
 
+    //pre initializing Actions here because why not, we'll need it
     static Actions actions = new Actions(getDriver());
 
     public static WebDriver getDriver() {
@@ -56,21 +57,41 @@ public class BaseTest {
         Date time = new Date();
         String timeString = timeFormat.format(time);
 
-        if( feature == "" && status == "" ) {
+        //the if/else statement is just so that we don't clutter the system print logs
+        if(feature.equals("") && status.equals("")) {
             System.out.println("Comments: " + comments);
         }
         else {
             System.out.println("Time: " + timeString + " Test Feature: " + feature + " Status: " + status + " Comments: " + comments);
         }
+
+        if( status.equals("fail") || status.equals("skipped") ) {
+            SharedInfo.testFailChecker = true;
+        }
+        //regardless we will insert the timestamp into our results
         ExcelUtil.WriteCsvRecords(new String[]{timeString, feature, status, comments});
     }
 
     public static void writeReport() {
-        try {
-            ExcelUtil.WriteToFile(ExcelUtil.csvHeader + ExcelUtil.csvRecords.toString(), ExcelUtil.testResultsExcelFileName);
-        } catch (IOException e) {
-            e.printStackTrace();
+        ExcelUtil.testResultsExcelFileName = ExcelUtil.generateFileName();
+        ExcelUtil.csvFile = ExcelUtil.testResultsFilePath + ExcelUtil.testResultsExcelFileName;
+        System.out.println("csvFile =  " + ExcelUtil.csvFile);
+
+        if (SharedInfo.testFailChecker == true) {
+            ExcelUtil.testResultsExcelFileName = ExcelUtil.testResultsExcelFileName + "-FAIL";
         }
+
+        try {
+            ExcelUtil.WriteToFile(ExcelUtil.csvHeader + ExcelUtil.csvRecords.toString(), ExcelUtil.testResultsExcelFileName + ".csv");
+            //resetting testFailChecker after results are written
+        } catch (Exception e) {
+            try {
+                throw (e);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+        SharedInfo.testFailChecker = false;
     }
 
     //generic function for a short and long waits
@@ -113,7 +134,7 @@ public class BaseTest {
     public static String loginUser = "";
     public static String loginPwd = "";
     public static void setupEnv(String sponsor) {
-        //we set the url depending on environment with the if statement below, we also preset the login credentials
+        //we set the url depending on environment with the if statement below
         if (SharedInfo.env.equals("QA")) {
             getDriver().get(SharedInfo.qaUrl);
             writeData("", "", "Url is " + SharedInfo.qaUrl);
@@ -127,18 +148,18 @@ public class BaseTest {
             writeData("", "", "Url is " + SharedInfo.prodUrl);
         }
 
-        //if sponsor is empty then we skip all the sponsor logic, and just match environment
+        //if sponsor is empty then we skip all the sponsor logic, and just match environment for credentials
         if (sponsor.equals("")) {
             writeData("", "", "Environment is " + SharedInfo.env + " and sponsor not specified");
             for (int i = 0; i < SharedInfo.credentialsCount; i++) {
                 String testEnv = ExcelUtil.getCellData(i, 0);
-                String testSponsor = ExcelUtil.getCellData(i, 1);
 
                 //only need to match environment
                 if (testEnv.equals(SharedInfo.env)) {
                     loginUser = ExcelUtil.getCellData(i, 3);
                     loginPwd = ExcelUtil.getCellData(i, 4);
                     writeData("", "", "credential match WITHOUT tier OR sponsor info provided");
+                    writeData("", "", "username is " + loginUser + " and password is " + loginPwd);
                     break;
                 }
             }

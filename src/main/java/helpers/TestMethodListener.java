@@ -50,7 +50,6 @@ public class TestMethodListener implements ITestListener, ISuiteListener, IInvok
         String stackTraceString = Throwables.getStackTraceAsString(test);
         stackTraceString = stackTraceString.replace("\n", "\n,,,");
         BaseTest.writeData(SharedInfo.testName, "fail", "Test Throwable: " + stackTraceString);
-//        BaseTest.writeReport();
     }
 
     // ITestListener and will execute before the main test start (@Test)
@@ -68,7 +67,6 @@ public class TestMethodListener implements ITestListener, ISuiteListener, IInvok
         String stackTraceString = Throwables.getStackTraceAsString(test);
         stackTraceString = stackTraceString.replace("\n", "\n,,,");
         BaseTest.writeData(SharedInfo.testName, "skipped", "Test Throwable: " + stackTraceString);
-//        BaseTest.writeReport();
     }
 
     // IInvokedMethodListener and will execute before every method including
@@ -95,6 +93,5 @@ public class TestMethodListener implements ITestListener, ISuiteListener, IInvok
         String stackTraceString = Throwables.getStackTraceAsString(test);
         stackTraceString = stackTraceString.replace("\n", "\n,,,");
         BaseTest.writeData(SharedInfo.testName, "within percentage", "Test Throwable: " + stackTraceString);
-//        BaseTest.writeReport();
     }
 }

@@ -2,7 +2,7 @@ package helpers;
 
 public class SharedInfo {
     //things you might want to change
-    public static final String env = "QA";
+    public static String env = "QA";
     public static final String projectName = "TestingFramework";
     public static final String receivingEmail = "jwong@konradgroup.com";
     public static final String fakePhoneNumber = "4161234567";
@@ -27,6 +27,7 @@ public class SharedInfo {
     public static String testName = "";
     public static String currentSponsor = "";
     public static String currentTier = "";
+    public static boolean testFailChecker = false;
 }
 
 // To Do:

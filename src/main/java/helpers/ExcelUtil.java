@@ -132,7 +132,7 @@ public class ExcelUtil {
         System.out.println("sequence number used for file name is " + sequenceNumber);
 
         // concatenates the filename
-        String generatedFileName = newDate + sequenceNumber + "-" + SharedInfo.env + "-" + SharedInfo.projectName + "-" + SharedInfo.testName + ".csv";
+        String generatedFileName = newDate + sequenceNumber + "-" + SharedInfo.env + "-" + SharedInfo.projectName + "-" + SharedInfo.testName;
 
         // writes the used date along with the sequence number into dateTracker.csv
         File fileOut = new File(testDataExcelPath + SharedInfo.dateTrackerFileName);
@@ -191,15 +191,8 @@ public class ExcelUtil {
             }
         }
 
-        try {
-            //setting up the results spreadsheet
-            testResultsExcelFileName = generateFileName();
-            csvFile = testResultsFilePath + testResultsExcelFileName;
-            System.out.println("csvFile =  " + csvFile);
-            csvHeader = WriteCsvHeader(new String[]{"Time", "Test Feature", "Status", "Comments"});
-        } catch (Exception e) {
-            throw (e);
-        }
+        //setting up the results spreadsheet header
+        csvHeader = WriteCsvHeader(new String[]{"Time", "Test Feature", "Status", "Comments"});
     }
 
     //This method reads the test data from the Excel cell.
@@ -263,7 +256,7 @@ public class ExcelUtil {
         csvRecords.append("\n");
     }
 
-    //this is method that actually writes the header and the results into a csv file
+    //this method writes the header and the results into a csv file
     public static void WriteToFile(String fileContent, String fileName) throws IOException {
         String tempFile = csvFile;
         File file = new File(tempFile);
