@@ -104,27 +104,60 @@ There are a number of pre-written methods/functions in here. Few are written by 
 This class contains methods that are commonly used for almost every test.
 
 #### getDriver()
+Just a centralized function for setting up your driver. So that you don't have to initialize your driver at the beginning of every test, and if you need to change to another browser you can easily do so for all tests. You'll have to write some extra code if you want it to run through a bunch of different browsers for each test, or you can wait and I'll end up doing that at some point. 
+
+In terms of usage, instead of driver.get("www.google.com") it's getDriver().get("www.google.com"). 
 
 #### setUp()
+The name isn't actually important, but you'll notice in the code that setup() method is "prefixed" with @BeforeClass, which is a TestNG thing. This basically gets run at the beginning of every test. You can throw all kinds of things in here if you want, like if you wrote a login function and all your tests always require login, you can throw that in here. I've just got some timeouts being set here at the moment.
 
 #### wrapUp()
+This is very similar to setUp(), instead of @BeforeClass it's got @AfterClass instead, and it just runs this at the end of every test. I've got it running the writeReport() method for now, which writes the results into a csv file. You may likely want to include a logout function for yourself, if your tests require logging in and out with different users and capabilities for each user etc.
 
 #### writeData(String feature, String status, String comments)
+This is a function that helps us log things, and it automatically adds a timestamp. When using this you have to provide a string for feature, status, and comments, however these can be blank strings of course. It will automatically System.out.println the whole thing, and it also detects if you or any of the listeners are sending a "fail" for the status, in which case it updates the testFailChecker boolean to "true". The testFailChecker boolean is used by writeReport() method to determine if we need to add a suffix of "FAIL" to the title of the test results csv file. I've also commented on the code so it shouln't be hard to follow.
 
 #### writeReport()
+This function is used to do a few things:
+1. generate the file name
+2. check if the current test has failed in any respect, and if so it adds a "-FAIL" suffix to the file name
+3. writes the header and all the test results into the csv file
+
+So basically how the csv file writing works is that, we store the header, and then the content, as strings separately. These are stored as the variables csvHeader and csvRecords respectively. We then only append them all together and write it to the csv file at the end, not writing to the file each time we run writeData(). This is in part because we don't know the file name until the end (because if it fails then the name changes), and it also feels like it would cost more time and resources to write to the file each time (have not tested this, just assuming, so I could be completely wrong).
 
 #### shortWait() and longWait()
+Just a basic Thread.sleep() function with the try catch written in for you. Helps save you time, and also centralizes all your waits if you need to change them later. From my experiences, if you really need to force a wait in your tests, it's usually pretty consistent in that it's a relatively short wait, or a loooong wait. You don't need to use any of these and can write custom Thread.sleep() or any other kind of waitTillVisible or whatever you want!
 
 #### isElementDisplayed(WebElement element) and waitForElementToBeGone(WebElement element, int timeout)
+These two functions are niftly little things I found on StackOverflow. I kept running into this issue of using ExpectedConditions.elementToBeClickable or visibilityOfElementLocated and it failing because of a loading spinner that is semi-transparent. The stupid spinner blocks us from clicking the element, but it's clickable and visible so you just get a failure instantly, very frustrating and annoying.
+
+To use this function, you need to grab the element and give it to waitForElementToBeGone:
+```java
+WebElement loadSpinner = getDriver().findElement(By.className("loadSpinner"));
+waitForElementToBeGone(loadSpinner, 30);
+```
+This basically will sit there and wait for however long you assigned it to wait (in this case as you can see, it's 30 seconds), or until the load spinner is gone (if it happens before the assigned amount of time). You don't actually end up using isElementDisplayed yourself, if you look at the code you'll see that isElementDisplayed() is called within waitForElementToBeGone().
 
 #### setupEnv(String sponsor)
+This function does a little too much, I might need to re-write this a bit... anyway it does the following:
+1. depending on what SharedInfo.env is, it grabs the appropriate url
+2. it also checks the testing credentials spreadsheet and tries to grab the appropriate crendentials depending on the environment, if you specified a sponsor (leave as a blank string if this is unneccessary), if the users are split into different tiers (again, ignore if unneccessary) etc.
+
+The code has a good amount of comments in it, feel free to have a look and tell me how bad it is :P
 
 ### ExcelUtil.java
 This class contains methods that mostly deal with reading Excel files and writing csv files. Many of these are just retreived from StackOverflow with minor changes by me to work for my needs. I won't talk about all of them here as many are self-explanatory.
 
 #### generateFileName()
+This is the function that generates the crazy and complicated file name that I explained under Results near the top of this readme. I basically:
+1. grab todays date
+2. compare that date to the date written in the dateTracker.csv file (which stores the date of the last time I ran a test)
+3. if the date is different, we update the "sequence number" to 1 (which is also explained under Results)
+4. if the date is the same, then we keep using this date, but increment the sequence number
+5. then we grab the rest of the good stuff, like project name, test name etc, and return the whole string
 
 #### setTestExcelData()
+This function gets all the excel spreadsheets and csv files ready. We setup the file paths, initalize the spreadsheets, and write out the header for the csv file here. For more info on what I mean by initializing the spreadsheet, 
 
 #### WriteCsvHeader()
 
