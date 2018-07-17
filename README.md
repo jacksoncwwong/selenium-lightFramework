@@ -5,7 +5,7 @@ A light set of functions that will generate csv files for test results, read tes
 ### Quick Intro
 For the most part this is meant to help with reporting for automated tests. I want to start by mentioning that there are other reporting tools, such as [ReportNG](https://reportng.uncommons.org/), [Maven SureFire plugin](https://maven.apache.org/surefire/maven-surefire-report-plugin/), [ExtentReport](http://extentreports.com/) just to name a few. You may be wondering: "If there were others already, why did you do this?" and I would say that's a great question. 
 
-**_Was it in-part due to the fact that I started writing this before I found out about these alternatives?_** 
+**_Was it in-part due to the fact that I started writing this before I found out about these existing tools?_** 
 
 ~YES~ Perhaps... 
 
@@ -57,7 +57,17 @@ This is where I would recommend you store all your page models.
 This is where I would recommend you store all your tests.
 
 ### Helpers
-This is where I would recommend you store all methods and functions that get used by the tests you write. Separating these from the tests themselves help with organization and refactoring (I often name tests after their features, which can make them easily confused with my helpers)
+This is where I would recommend you store all methods and functions that get used by the tests you write. Separating these from the tests themselves help with organization and refactoring (I often name tests after their features, which can make them easily confused with my helpers).
+
+I'll discuss more about the methods used here, however for now I just want to bring your attention to **SharedInfo.java**. This file contains variables that are important and used in various places. I've separated these variables into 3 categories: 
+#### Things you might want to change
+So these are things like: what's the current environment you're testing in, what is the project name, what is the email address you want to use (for those times when you need to enter an email into a form and receive some response back), etc etc. These are generally things that won't really break your tests even if they're wrong.
+
+#### Things you probably don't want to change
+I've got the urls for QA, UAT and PROD here, you can obviously put other things here as well.
+
+#### Things you should never change unless you're very very very sure
+This is where I put very very important variables, like file paths, variables that are initialized and very important to various functions/methods, important file names that shouldn't be changed etc. These are things that can definitely break this framework if you change them, so I've separated them a bit to give you fair warning :D.
 
 ### Results
 This folder is where all the csv files for your test results will go. The function that generates the file names are under this format 
@@ -83,6 +93,9 @@ This is a csv file I use to keep track of the date and sequence number last used
 
 #### projectTestData.xlsx
 This is a sample spreadsheet of how I organize login credentials. If the current structure works for you then you can use as is (if you don't need a sub category for your users like "Sponsor" then just leave that blank). If you end up changing the order of columns then you'll have to update the setupEnv() method in the BaseTest.java file from Helpers folder. I was lazy and it currently grabs username and password just based on the column number I wrote in, I will update this in the future and have it read the column header to know what it's reading.
+
+## Listeners
+Listeners are used to trigger certain actions/methods/functions when certain events happen, and they are managed in the TestMethodListener.java file. For the most part they are very self-explanatory, there are triggers for the start/end of a suite/test, when a test is successful, **when a test failed** (probably the most important one) etc etc. If you need more control when these kinds of situations occur, this is where you'd want to do some tinkering. 
 
 ## Methods
 There are a number of pre-written methods/functions in here. Few are written by me, most are just copied and refactored to fit what I'm trying to do, I will do my best here to explain what each is for:
