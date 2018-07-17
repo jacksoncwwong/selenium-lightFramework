@@ -14,7 +14,6 @@ public class SharedInfo {
     public static final String qaUrl = "https://qa.com/";
     public static final String uatUrl = "https://uat.com/";
     public static final String prodUrl = "https://prod.ca/";
-    public static int credentialsCount = 20; //this is just a placeholder, this value gets set within setTestExcelData() and will count the rows that exist in the spreadsheet
 
     //things you should never change unless you're very very very sure
     public static final String testDataExcelFileName = "projectTestData.xlsx";
@@ -24,6 +23,7 @@ public class SharedInfo {
     public static final String testDataInternalPathWIN = "\\src\\main\\java\\resources\\";;
     public static final String testResultsInternalPathWIN = "\\src\\main\\results\\";;
     public static final String COMMA_DELIMITER = ",";
+    public static int credentialsCount;
     public static String testName = "";
     public static String currentSponsor = "";
     public static String currentTier = "";

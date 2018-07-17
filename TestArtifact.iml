@@ -64,8 +64,5 @@
     <orderEntry type="library" name="Maven: org.testng:testng:6.3.1" level="project" />
     <orderEntry type="library" name="Maven: junit:junit:3.8.1" level="project" />
     <orderEntry type="library" name="Maven: org.beanshell:bsh:2.0b4" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: org.uncommons:reportng:1.1.4" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: velocity:velocity:1.4" level="project" />
-    <orderEntry type="library" scope="TEST" name="Maven: velocity:velocity-dep:1.4" level="project" />
   </component>
 </module>
