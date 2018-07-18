@@ -95,6 +95,16 @@ ExcelUtil.setTestExcelData();
 setupEnv("");
 ```
 
+## What the results look like
+### Example of csv file
+[This](https://github.com/jacksoncwwong/selenium-lightFramework/blob/master/src/main/results/2018.07.18-001-QA-TestingFramework-extendBaseFlow-FAIL.csv) is a sample file of a test that failed. It's not pretty, but I would say everything you really need is in there.
+
+### Example of folder populated with tests
+
+
+### Details
+For more details refer to the "Results" section below.
+
 ## Folder Structure
 This is what makes sense to me, but then what do I know? In anycase, here's how they're organized:
 ### Pages
