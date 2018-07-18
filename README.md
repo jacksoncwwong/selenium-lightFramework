@@ -126,9 +126,9 @@ Here's an example: 2018.07.13-023-QA-jupiterTesting-createAccountFlow.csv
 Since we often run multiple times a day, the sequence number gets incremented each time you run a test for that day (gives you an idea of which tests were run first etc). Based on the example provided above, the sequnce number "023" means this is the 23rd test I've run on July 13th, 2018, for the project "jupiterTesting", for testing the feature called "createAccountFlow".
 
 You might be wondering why I did this... 
-1. Due to the naming convention this means that all files will automatically be organized in reverse chronological order (the most recent being first). 
+1. Due to the naming convention this means that all files will automatically be organized in chronological order.
 2. I really like having as much information in the title of a file as possible, that way I'm sure this is the file I want to open. 
-3. It really helps when I'm trying to see all the tests I've ever run for a particular feature (just search for that feature in the folder), and they will automatically be listed in reverse chronological order (instead of going into logs of tests you ran for that day, trying to find the part that has to do with that feature, extracting that for each day/test and then comparing them).
+3. It really helps when I'm trying to see all the tests I've ever run for a particular feature (just search for that feature in the folder), and they will automatically be listed in chronological order (instead of going into logs of tests you ran for that day, trying to find the part that has to do with that feature, extracting that for each day/test and then comparing them).
 
 One last thing, if a test fails, the csv file name will have a suffix of -FAIL. The way this is managed is via the testFailChecker boolean, which is used in the writeData method and gets reset in the writeReport method. For more details refer to the Methods section in this readme.
 
