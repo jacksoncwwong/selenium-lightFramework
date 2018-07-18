@@ -9,7 +9,7 @@ For the most part this is meant to help with reporting for automated tests. I wa
 
 ~YES~ Perhaps... 
 
-However, I decided to continue finishing this framework because there were just things I didn't really like in the alternatives I found: some of them I had a tough time getting to work, others didn't really have features that I felt were needed etc.
+However, I decided to continue finishing this framework because there were just things I didn't really like in the alternatives I found: some of them I had a tough time getting to work (or they're not maintained anymore and documentation is lacking), others didn't really have features that I felt were needed (or you had to pay for them) etc.
 
 ### Using Page Object Model
 This is written with the assumption that you're working with Page Object Model(POM). There are many resources online that will explain what POM is, but for the most part this just means that you have a file for every page which grabs all the elements, and you have a separate file that will utilize these elements and test their functionality. 
@@ -22,30 +22,77 @@ This is because I don't currently have a paid version of Excel and am too lazy t
 The major downside here is that comments in the logs cannot contain commas, or should refrain from using commas since it would cause what comes after the comma to be in the next cell (CSV = comma separated values afterall).
 
 ### How to use this?
-For the most part, you just need to download this and you can start writing tests within the "tests" directory and page objects within the "pages" directory. Refer to the sample test I wrote called ExtendBase.java, basically you need to follow the basic structure of extending BaseTest, starting with @Test, and naming your method within the class:
+For the most part, you just need to download this and you can start writing tests within the "tests" directory and page objects within the "pages" directory. Refer to the sample test I wrote called ExtendBase.java and the sample page I wrote called SamplePage.java, here's SamplePage.java:
+```java
+package pages;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
+
+public class SamplePage {
+    final WebDriver driver;
+
+    @FindBy(how = How.XPATH, using = "//*[@id=\"qacookies-continue-button\"]")
+    public WebElement continueBtn;
+
+    public SamplePage (WebDriver driver) {
+        this.driver = driver;
+    }
+}
+```
+
+and here's ExtendBase.java:
 ```java
 package tests;
 
 import helpers.BaseTest;
 import helpers.ExcelUtil;
 import helpers.SharedInfo;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.SamplePage;
 
 public class ExtendBase extends BaseTest {
+    static SamplePage SamplePage = PageFactory.initElements(getDriver(), SamplePage.class);
+
     @Test
     public void extendBaseFlow() {
-        //can change environment here for each of the tests
-//        SharedInfo.env = "QA";
+        //can change environment for each of the tests like so:
+        SharedInfo.env = "QA";
+        //declaring test name below
         SharedInfo.testName = "extendBaseFlow";
 
+        //this line sets up your spreadsheets:
         ExcelUtil.setTestExcelData();
+        //this line sets up your environment and login credentials:
         setupEnv("");
 
-        //start writing your test from here, the line below is just something to trigger a failure, please remember to remove when writing your own test
+        //*** most likely start writing your test from here ***
+        //loginUser and loginPwd should be set at this point, you can use them like so:
+        //(the code below is just an example, it doesn't work)
+//        SignInPage.signInUserInput.sendKeys(loginUser);
+//        SignInPage.signInPwdInput.sendKeys(loginPwd);
+
+        //example of how to call elements from SamplePage
+        //the line below only works if SharedInfo.env = "QA":
+        SamplePage.continueBtn.click();
+
+        //the line below is just something to trigger a failure
+        //run the test as is to demonstrate what a failed report would look like
         Assert.assertTrue(false);
     }
 }
+```
+
+So as you can see, this basically works just like how you would with POM (although I admit everyone implements POM slightly differently), the main thing is to start every test with these four lines:
+```java
+SharedInfo.env = "QA";    
+SharedInfo.testName = "extendBaseFlow";
+ExcelUtil.setTestExcelData();
+setupEnv("");
 ```
 
 ## Folder Structure
@@ -79,9 +126,9 @@ Here's an example: 2018.07.13-023-QA-jupiterTesting-createAccountFlow.csv
 Since we often run multiple times a day, the sequence number gets incremented each time you run a test for that day (gives you an idea of which tests were run first etc). Based on the example provided above, the sequnce number "023" means this is the 23rd test I've run on July 13th, 2018, for the project "jupiterTesting", for testing the feature called "createAccountFlow".
 
 You might be wondering why I did this... 
-1. Due to the naming convention this means that all files will automatically be organized in reverse chronological order (the most recent being first). 
+1. Due to the naming convention this means that all files will automatically be organized in chronological order.
 2. I really like having as much information in the title of a file as possible, that way I'm sure this is the file I want to open. 
-3. It really helps when I'm trying to see all the tests I've ever run for a particular feature (just search for that feature in the folder), and they will automatically be listed in reverse chronological order (instead of going into logs of tests you ran for that day, trying to find the part that has to do with that feature, extracting that for each day/test and then comparing them).
+3. It really helps when I'm trying to see all the tests I've ever run for a particular feature (just search for that feature in the folder), and they will automatically be listed in chronological order (instead of going into logs of tests you ran for that day, trying to find the part that has to do with that feature, extracting that for each day/test and then comparing them).
 
 One last thing, if a test fails, the csv file name will have a suffix of -FAIL. The way this is managed is via the testFailChecker boolean, which is used in the writeData method and gets reset in the writeReport method. For more details refer to the Methods section in this readme.
 
@@ -157,10 +204,13 @@ This is the function that generates the crazy and complicated file name that I e
 5. then we grab the rest of the good stuff, like project name, test name etc, and return the whole string
 
 #### setTestExcelData()
-This function gets all the excel spreadsheets and csv files ready. We setup the file paths, initalize the spreadsheets, and write out the header for the csv file here. For more info on what I mean by initializing the spreadsheet, 
+This function gets all the excel spreadsheets and csv files ready. We setup the file paths, initalize the spreadsheets, and write out the header for the csv file here. For more info on what I mean by initializing the spreadsheet (or how to use the API that works with excel spreadsheets) you can read about that from a tutorial [here](https://www.tutorialspoint.com/apache_poi/apache_poi_workbooks.htm) and the documentation [here](https://poi.apache.org/apidocs/org/apache/poi/xssf/usermodel/XSSFWorkbook.html).
 
 #### WriteCsvHeader()
+This function just helps to build the String properly: makes sure each header is comma separated, appends a new line \n at the end of the header. Just a little helper (I stole this).
 
 #### WriteCsvRecords()
+Similar to the function above, this is just a helper function to make sure the records are properly comma separated, and appends a new line \n at the end.
 
 #### WriteToFile()
+This is the function that actually finalizes the file name and writes everything into the new file. It also clears the csvRecords variable so we don't carry over old records to the new files.
