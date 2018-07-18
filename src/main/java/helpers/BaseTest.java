@@ -66,7 +66,7 @@ public class BaseTest {
         }
 
         //if statement to check if something has failed or been skipped, and if so we update testFailChecker
-        if( status.equals("fail") || status.equals("skipped") ) {
+        if( status.toUpperCase().equals("FAIL") || status.toUpperCase().equals("SKIPPED") ) {
             SharedInfo.testFailChecker = true;
 //            System.out.println("failure detected");
         }
@@ -169,23 +169,23 @@ public class BaseTest {
         while(!testCell.equals("")) {
             testCell = ExcelUtil.getCellData(0, cellCount);
 
-            if (testCell.equals("Environment")) {
+            if (testCell.toUpperCase().equals("ENVIRONMENT")) {
                 environmentColumnNumber = cellCount;
                 System.out.println("environmentColumnNumber is " + environmentColumnNumber);
             }
-            else if (testCell.equals("Sponsor")) {
+            else if (testCell.toUpperCase().equals("SPONSOR")) {
                 sponsorColumnNumber = cellCount;
                 System.out.println("sponsorColumnNumber is " + sponsorColumnNumber);
             }
-            else if (testCell.equals("Tier")) {
+            else if (testCell.toUpperCase().equals("TIER")) {
                 tierColumnNumber = cellCount;
                 System.out.println("tierColumnNumber is " + tierColumnNumber);
             }
-            else if (testCell.equals("loginUser")) {
+            else if (testCell.toUpperCase().equals("LOGINUSER")) {
                 loginUserColumnNumber = cellCount;
                 System.out.println("loginUserColumnNumber is " + loginUserColumnNumber);
             }
-            else if (testCell.equals("loginPwd")) {
+            else if (testCell.toUpperCase().equals("LOGINPWD")) {
                 loginPwdColumnNumber = cellCount;
                 System.out.println("loginPwdColumnNumber is " + loginPwdColumnNumber);
             }
@@ -200,7 +200,7 @@ public class BaseTest {
                 String testEnv = ExcelUtil.getCellData(i, environmentColumnNumber);
 
                 //only need to match environment
-                if (testEnv.equals(SharedInfo.env)) {
+                if (testEnv.toUpperCase().equals(SharedInfo.env)) {
                     loginUser = ExcelUtil.getCellData(i, loginUserColumnNumber);
                     loginPwd = ExcelUtil.getCellData(i, loginPwdColumnNumber);
                     writeData("", "", "credential match WITHOUT tier OR sponsor info provided");
