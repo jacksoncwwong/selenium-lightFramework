@@ -45,7 +45,7 @@ public class TestMethodListener implements ITestListener, ISuiteListener, IInvok
     @Override
     public void onTestFailure(ITestResult arg0) {
         BaseTest.writeData(SharedInfo.testName, "fail", "Test Status: " + arg0.getName());
-        BaseTest.writeData(SharedInfo.testName, "fail", "Test Context: " + arg0.getTestContext());
+//        BaseTest.writeData(SharedInfo.testName, "fail", "Test Context: " + arg0.getTestContext());
         Throwable test = arg0.getThrowable();
         String stackTraceString = Throwables.getStackTraceAsString(test);
         stackTraceString = stackTraceString.replace("\n", "\n,,,");
@@ -62,7 +62,7 @@ public class TestMethodListener implements ITestListener, ISuiteListener, IInvok
     @Override
     public void onTestSkipped(ITestResult arg0) {
         BaseTest.writeData(SharedInfo.testName, "skipped", "Test Status: " + arg0.getName());
-        BaseTest.writeData(SharedInfo.testName, "skipped", "Test Context: " + arg0.getTestContext());
+//        BaseTest.writeData(SharedInfo.testName, "skipped", "Test Context: " + arg0.getTestContext());
         Throwable test = arg0.getThrowable();
         String stackTraceString = Throwables.getStackTraceAsString(test);
         stackTraceString = stackTraceString.replace("\n", "\n,,,");
@@ -88,7 +88,7 @@ public class TestMethodListener implements ITestListener, ISuiteListener, IInvok
     public void onTestFailedButWithinSuccessPercentage(ITestResult result) {
         BaseTest.writeData(SharedInfo.testName, "within percentage", "onTestFailedButWithinSuccessPercentage: " + result.getTestName());
         BaseTest.writeData(SharedInfo.testName, "within percentage", "Test Status: " + result.getName());
-        BaseTest.writeData(SharedInfo.testName, "within percentage", "Test Context: " + result.getTestContext());
+//        BaseTest.writeData(SharedInfo.testName, "within percentage", "Test Context: " + result.getTestContext());
         Throwable test = result.getThrowable();
         String stackTraceString = Throwables.getStackTraceAsString(test);
         stackTraceString = stackTraceString.replace("\n", "\n,,,");
