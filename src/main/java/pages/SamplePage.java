@@ -6,12 +6,12 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
 public class SamplePage {
-    final WebDriver driver;
+  final WebDriver driver;
 
-    @FindBy(how = How.XPATH, using = "//*[@id=\"qacookies-continue-button\"]")
-    public WebElement continueBtn;
+  @FindBy(how = How.XPATH, using = "//*[@id=\"qacookies-continue-button\"]")
+  public WebElement continueBtn;
 
-    public SamplePage (WebDriver driver) {
-        this.driver = driver;
-    }
+  public SamplePage (WebDriver driver) {
+    this.driver = driver;
+  }
 }
