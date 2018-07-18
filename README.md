@@ -22,30 +22,77 @@ This is because I don't currently have a paid version of Excel and am too lazy t
 The major downside here is that comments in the logs cannot contain commas, or should refrain from using commas since it would cause what comes after the comma to be in the next cell (CSV = comma separated values afterall).
 
 ### How to use this?
-For the most part, you just need to download this and you can start writing tests within the "tests" directory and page objects within the "pages" directory. Refer to the sample test I wrote called ExtendBase.java, basically you need to follow the basic structure of extending BaseTest, starting with @Test, and naming your method within the class:
+For the most part, you just need to download this and you can start writing tests within the "tests" directory and page objects within the "pages" directory. Refer to the sample test I wrote called ExtendBase.java and the sample page I wrote called SamplePage.java, here's SamplePage.java:
+```java
+package pages;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
+
+public class SamplePage {
+    final WebDriver driver;
+
+    @FindBy(how = How.XPATH, using = "//*[@id=\"qacookies-continue-button\"]")
+    public WebElement continueBtn;
+
+    public SamplePage (WebDriver driver) {
+        this.driver = driver;
+    }
+}
+```
+
+and here's ExtendBase.java:
 ```java
 package tests;
 
 import helpers.BaseTest;
 import helpers.ExcelUtil;
 import helpers.SharedInfo;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.SamplePage;
 
 public class ExtendBase extends BaseTest {
+    static SamplePage SamplePage = PageFactory.initElements(getDriver(), SamplePage.class);
+
     @Test
     public void extendBaseFlow() {
-        //can change environment here for each of the tests
-//        SharedInfo.env = "QA";
+        //can change environment for each of the tests like so:
+        SharedInfo.env = "QA";
+        //declaring test name below
         SharedInfo.testName = "extendBaseFlow";
 
+        //this line sets up your spreadsheets:
         ExcelUtil.setTestExcelData();
+        //this line sets up your environment and login credentials:
         setupEnv("");
 
-        //start writing your test from here, the line below is just something to trigger a failure, please remember to remove when writing your own test
+        //*** most likely start writing your test from here ***
+        //loginUser and loginPwd should be set at this point, you can use them like so:
+        //(the code below is just an example, it doesn't work)
+//        SignInPage.signInUserInput.sendKeys(loginUser);
+//        SignInPage.signInPwdInput.sendKeys(loginPwd);
+
+        //example of how to call elements from SamplePage
+        //the line below only works if SharedInfo.env = "QA":
+        SamplePage.continueBtn.click();
+
+        //the line below is just something to trigger a failure
+        //run the test as is to demonstrate what a failed report would look like
         Assert.assertTrue(false);
     }
 }
+```
+
+So as you can see, this basically works just like how you would with POM (although I admit everyone implements POM slightly differently), the main thing is to start every test with these four lines:
+```java
+SharedInfo.env = "QA";    
+SharedInfo.testName = "extendBaseFlow";
+ExcelUtil.setTestExcelData();
+setupEnv("");
 ```
 
 ## Folder Structure
