@@ -9,7 +9,7 @@ For the most part this is meant to help with reporting for automated tests. I wa
 
 ~YES~ Perhaps... 
 
-However, I decided to continue finishing this framework because there were just things I didn't really like in the alternatives I found: some of them I had a tough time getting to work, others didn't really have features that I felt were needed (or you had to pay for them) etc.
+However, I decided to continue finishing this framework because there were just things I didn't really like in the alternatives I found: some of them I had a tough time getting to work (or they're not maintained anymore and documentation is lacking), others didn't really have features that I felt were needed (or you had to pay for them) etc.
 
 ### Using Page Object Model
 This is written with the assumption that you're working with Page Object Model(POM). There are many resources online that will explain what POM is, but for the most part this just means that you have a file for every page which grabs all the elements, and you have a separate file that will utilize these elements and test their functionality. 
@@ -157,10 +157,13 @@ This is the function that generates the crazy and complicated file name that I e
 5. then we grab the rest of the good stuff, like project name, test name etc, and return the whole string
 
 #### setTestExcelData()
-This function gets all the excel spreadsheets and csv files ready. We setup the file paths, initalize the spreadsheets, and write out the header for the csv file here. For more info on what I mean by initializing the spreadsheet, 
+This function gets all the excel spreadsheets and csv files ready. We setup the file paths, initalize the spreadsheets, and write out the header for the csv file here. For more info on what I mean by initializing the spreadsheet (or how to use the API that works with excel spreadsheets) you can read about that from a tutorial [here](https://www.tutorialspoint.com/apache_poi/apache_poi_workbooks.htm) and the documentation [here](https://poi.apache.org/apidocs/org/apache/poi/xssf/usermodel/XSSFWorkbook.html).
 
 #### WriteCsvHeader()
+This function just helps to build the String properly: makes sure each header is comma separated, appends a new line \n at the end of the header. Just a little helper (I stole this).
 
 #### WriteCsvRecords()
+Similar to the function above, this is just a helper function to make sure the records are properly comma separated, and appends a new line \n at the end.
 
 #### WriteToFile()
+This is the function that actually finalizes the file name and writes everything into the new file. It also clears the csvRecords variable so we don't carry over old records to the new files.
