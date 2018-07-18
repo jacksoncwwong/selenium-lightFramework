@@ -96,14 +96,15 @@ setupEnv("");
 ```
 
 ## What the results look like
+So you know what you're getting yourself into :D
+The results folder has a bunch of test results in there, I've also linked to one below for convenience. There's a screenshot of what the results folder would look like also. It may seem crazy at first, but if you bear with me you may find this to be useful (hopefully).
+
 ### Example of csv file
 [This](https://github.com/jacksoncwwong/selenium-lightFramework/blob/master/src/main/results/2018.07.18-001-QA-TestingFramework-extendBaseFlow-FAIL.csv) is a sample file of a test that failed. It's not pretty, but I would say everything you really need is in there.
 
 ### Example of folder populated with tests
-
-
-### Details
-For more details refer to the "Results" section below.
+![alt text](https://github.com/jacksoncwwong/selenium-lightFramework/blob/master/results-screenshot.png "image showing what the files look like in the results folder")
+Please refer to the "Results" section below (under Folder Structure) to get an idea of why these are named like that.
 
 ## Folder Structure
 This is what makes sense to me, but then what do I know? In anycase, here's how they're organized:
