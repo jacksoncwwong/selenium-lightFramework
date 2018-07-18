@@ -9,7 +9,7 @@ For the most part this is meant to help with reporting for automated tests. I wa
 
 ~YES~ Perhaps... 
 
-However, I decided to continue finishing this framework because there were just things I didn't really like in the alternatives I found: some of them I had a tough time getting to work, others didn't really have features that I felt were needed etc.
+However, I decided to continue finishing this framework because there were just things I didn't really like in the alternatives I found: some of them I had a tough time getting to work, others didn't really have features that I felt were needed (or you had to pay for them) etc.
 
 ### Using Page Object Model
 This is written with the assumption that you're working with Page Object Model(POM). There are many resources online that will explain what POM is, but for the most part this just means that you have a file for every page which grabs all the elements, and you have a separate file that will utilize these elements and test their functionality. 
