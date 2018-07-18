@@ -22,6 +22,8 @@ This is because I don't currently have a paid version of Excel and am too lazy t
 The major downside here is that comments in the logs cannot contain commas, or should refrain from using commas since it would cause what comes after the comma to be in the next cell (CSV = comma separated values afterall).
 
 ### How to use this?
+To start, you just need to clone/fork/download this and import it as a maven project. From there you should be able to run the ExtendBase.java right a way and get a failed test result, along with a csv file generated with the logs.
+
 For the most part, you just need to download this and you can start writing tests within the "tests" directory and page objects within the "pages" directory. Refer to the sample test I wrote called ExtendBase.java and the sample page I wrote called SamplePage.java, here's SamplePage.java:
 ```java
 package pages;
