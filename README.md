@@ -104,6 +104,7 @@ The results folder has a bunch of test results in there, I've also linked to one
 
 ### Example of folder populated with tests
 ![alt text](https://github.com/jacksoncwwong/selenium-lightFramework/blob/master/results-screenshot.png "image showing what the files look like in the results folder")
+
 Please refer to the "Results" section below (under Folder Structure) to get an idea of why these are named like that.
 
 ## Folder Structure
