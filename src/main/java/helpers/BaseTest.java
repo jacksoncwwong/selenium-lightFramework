@@ -62,7 +62,12 @@ public class BaseTest {
       System.out.println("Comments: " + comments);
     }
     else {
-      System.out.println("Time: " + timeString + " Test Feature: " + feature + " Status: " + status + " Comments: " + comments);
+      System.out.println(
+          "Time: " + timeString
+              + " Test Feature: " + feature
+              + " Status: " + status
+              + " Comments: " + comments
+      );
     }
 
     //if statement to check if something has failed or been skipped, and if so we update testFailChecker
