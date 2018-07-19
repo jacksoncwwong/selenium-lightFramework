@@ -1,5 +1,5 @@
 # selenium-lightFramework
-A light set of functions that will generate csv files for test results, read test data off Excel files, and test using TestNG.
+A light set of functions that will generate csv files for test results, read test data (ie: login credentials) off Excel files, and test using TestNG.
 
 ## Instructions
 ### Quick Intro
@@ -24,6 +24,10 @@ The major downside here is that comments in the logs cannot contain commas, or s
 ### How to use this?
 To start, you just need to clone/fork/download this and import it as a maven project. From there you should be able to run the ExtendBase.java right a way and get a failed test result, along with a csv file generated with the logs.
 
+#### Managing login credentials
+Within the resources folder (src/main/java/resources) you'll find the projectTestData.xlsx file. If you don't have a paid version of Excel you can use Libre Office to open it and save it as an excel file after. The most important thing is the "Environment", "loginUser" and "loginPwd" columns, you can move them around or add more columns etc if you'd like, but please don't change how these headings are spelled. I have a loop that will go through all the column headings to figure out which column these are but the names have to match.
+
+#### Writing tests
 For the most part, you just need to download this and you can start writing tests within the "tests" directory and page objects within the "pages" directory. Refer to the sample test I wrote called ExtendBase.java and the sample page I wrote called SamplePage.java, here's SamplePage.java:
 ```java
 package pages;
