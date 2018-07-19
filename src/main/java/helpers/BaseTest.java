@@ -57,20 +57,21 @@ public class BaseTest {
     Date time = new Date();
     String timeString = timeFormat.format(time);
 
-    //if we're just writing a comment, the if/else statement helps so we don't clutter the system print logs
+    //if we're just writing a comment, the if/else statement helps
+    //so we don't clutter the system print logs
     if(feature.equals("") && status.equals("")) {
       System.out.println("Comments: " + comments);
     }
     else {
-      System.out.println(
-          "Time: " + timeString
+      System.out.println("Time: " + timeString
               + " Test Feature: " + feature
               + " Status: " + status
               + " Comments: " + comments
       );
     }
 
-    //if statement to check if something has failed or been skipped, and if so we update testFailChecker
+    //if statement to check if something has failed or been skipped,
+    //and if so we update testFailChecker
     if( status.toUpperCase().equals("FAIL") || status.toUpperCase().equals("SKIPPED") ) {
       SharedInfo.testFailChecker = true;
 //            System.out.println("failure detected");
@@ -84,7 +85,8 @@ public class BaseTest {
 
     if (SharedInfo.testFailChecker == true) {
       ExcelUtil.testResultsExcelFileName = ExcelUtil.testResultsExcelFileName + "-FAIL";
-//            System.out.println("FAIL added to file name, new name is " + ExcelUtil.testResultsExcelFileName);
+//    System.out.println("FAIL added to file name, new name is "
+//        + ExcelUtil.testResultsExcelFileName);
     }
 
     ExcelUtil.testResultsExcelFileName = ExcelUtil.testResultsExcelFileName + ".csv";
@@ -94,7 +96,8 @@ public class BaseTest {
 //        System.out.println("csvFile =  " + ExcelUtil.csvFile);
 
     try {
-      ExcelUtil.WriteToFile(ExcelUtil.csvHeader + ExcelUtil.csvRecords.toString(), ExcelUtil.testResultsExcelFileName);
+      ExcelUtil.WriteToFile(ExcelUtil.csvHeader + ExcelUtil.csvRecords.toString(),
+          ExcelUtil.testResultsExcelFileName);
       //resetting testFailChecker after results are written
     } catch (Exception e) {
       try {
@@ -124,7 +127,8 @@ public class BaseTest {
   }
 
   //used in conjunction with the waitForElementToBeGone method
-  //to wait out a spinner so that you don't just fail assertions or clicks because the spinner is blocking
+  //to wait out a spinner so that you don't just fail assertions or clicks
+  //because the spinner is blocking
   public static boolean isElementDisplayed(WebElement element) {
     try {
       WebDriverWait spinnerWait = new WebDriverWait(getDriver(), 1);
@@ -139,7 +143,8 @@ public class BaseTest {
 
   public static void waitForElementToBeGone(WebElement element, int timeout) {
     if (isElementDisplayed(element)) {
-      new WebDriverWait(getDriver(), timeout).until(ExpectedConditions.not(ExpectedConditions.visibilityOf(element)));
+      new WebDriverWait(getDriver(), timeout)
+          .until(ExpectedConditions.not(ExpectedConditions.visibilityOf(element)));
     }
   }
 
@@ -198,9 +203,15 @@ public class BaseTest {
       cellCount++;
     }
 
-    //if sponsor is empty then we skip all the sponsor logic, and just match environment for credentials
+    //if sponsor is empty then we skip all the sponsor logic,
+    //and just match environment for credentials
     if (sponsor.equals("")) {
-      writeData("", "", "Environment is " + SharedInfo.env + " and sponsor not specified");
+
+      writeData(
+          "",
+          "",
+          "Environment is " + SharedInfo.env + " and sponsor not specified");
+
       for (int i = 0; i < SharedInfo.credentialsCount; i++) {
         String testEnv = ExcelUtil.getCellData(i, environmentColumnNumber);
 
@@ -208,17 +219,24 @@ public class BaseTest {
         if (testEnv.toUpperCase().equals(SharedInfo.env)) {
           loginUser = ExcelUtil.getCellData(i, loginUserColumnNumber);
           loginPwd = ExcelUtil.getCellData(i, loginPwdColumnNumber);
-          writeData("", "", "credential match WITHOUT tier OR sponsor info provided");
-          writeData("", "", "username is " + loginUser + " and password is " + loginPwd);
+          writeData(
+              "",
+              "",
+              "credential match WITHOUT tier OR sponsor info provided");
+          writeData(
+              "",
+              "",
+              "username is " + loginUser + " and password is " + loginPwd);
           break;
         }
       }
     }
-    else { // if a sponsor is specified we then reset the login credentials with the sponsor in mind
-      // assigning the shared variable currentSponsor as the sponsor provided
+    else { //if a sponsor is specified we then reset the login credentials with the sponsor in mind
+      //assigning the shared variable currentSponsor as the sponsor provided
       SharedInfo.currentSponsor = sponsor;
 
-      // loop to go through spreadsheet per row to find the a match of sponsor and environment (optionally checking tier)
+      //loop to go through spreadsheet per row to find a match of sponsor and environment
+      //(optionally checking tier)
       for (int i = 0; i < SharedInfo.credentialsCount; i++) {
         String testEnv = ExcelUtil.getCellData(i, environmentColumnNumber);
         String testSponsor = ExcelUtil.getCellData(i, sponsorColumnNumber);
@@ -236,17 +254,23 @@ public class BaseTest {
         }
         else {
           //given that currentTier is not empty, we'll have to match for that too here
-          if ( testEnv.equals(SharedInfo.env) && testSponsor.equals(sponsor) && testTier.equals(SharedInfo.currentTier) ) {
+          if ( testEnv.equals(SharedInfo.env)
+              && testSponsor.equals(sponsor)
+              && testTier.equals(SharedInfo.currentTier) ) {
             loginUser = ExcelUtil.getCellData(i, loginUserColumnNumber);
             loginPwd = ExcelUtil.getCellData(i, loginPwdColumnNumber);
             writeData("", "", "credential match with tier info found");
             break;
           }
         }
-        //probably a better way to write this, but the main concern I had was to make sure if a tier is specified then we must find one with the correct tier
-        //I wrote this another way before and the logic was flawed, if tier didn't match, the following if statement just tests whether sponsor and env match and would take that, ignoring the tier requirement
       }
-      writeData("", "", "Environment is " + SharedInfo.env + " the sponsor is " + sponsor + " and the credentials used are " + loginUser + "/" + loginPwd);
+      writeData(
+          "",
+          "", 
+          "Environment is "
+              + SharedInfo.env + " the sponsor is "
+              + sponsor + " and the credentials used are "
+              + loginUser + "/" + loginPwd);
     }
   }
 }
