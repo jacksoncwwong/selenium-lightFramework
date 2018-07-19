@@ -64,8 +64,9 @@ public class ExcelUtil {
     return columnNumber;
   }
 
-  // The generateFileName() method is used to generate the correct file name for dateTrackerFileName
-  // it also manages the dateTracker.csv file, which helps determines the dateTrackerFileName based on version # and date
+  //The generateFileName() method is used to generate the correct file name for dateTrackerFileName,
+  //it also manages the dateTracker.csv file,
+  //which helps determines the dateTrackerFileName based on version # and date
   public static String dateUsed = "";
   public static int dateUsageTracker = 1;
   public static String[] dataRead = {};
@@ -82,9 +83,12 @@ public class ExcelUtil {
     BufferedReader br = null;
     String line = "";
 
-    //we read the date in the dateTracker.csv and if there's anything written in there we save it to dateUsed and dateUsageTracker
+    //we read the date in the dateTracker.csv and
+    //if there's anything written in there we save it to dateUsed and dateUsageTracker
     try {
-      br = new BufferedReader(new FileReader(testDataExcelPath + SharedInfo.dateTrackerFileName));
+      br = new BufferedReader(
+          new FileReader(testDataExcelPath + SharedInfo.dateTrackerFileName));
+
       while((line = br.readLine()) != null) {
         dataRead = (line).split(SharedInfo.COMMA_DELIMITER);
         dateUsed = dataRead[0].replace(String.valueOf((char) 160), " ").trim();
@@ -105,7 +109,8 @@ public class ExcelUtil {
       }
     }
 
-    //if newDate is equal to the date being used, that means this is not the first time therefore version number gets increased
+    //if newDate is equal to the date being used,
+    //that means this is not the first time therefore version number gets increased
     if (newDate.equals(dateUsed)) {
       dateUsageTracker++;
       System.out.println("newDate equals dateUsed");
@@ -120,20 +125,17 @@ public class ExcelUtil {
     System.out.println("dateUsed is " + dateUsed);
     System.out.println("dateUsageTracker is " + dateUsageTracker);
 
-    // short explanation of possible cases in regards to the if statement and it's variables, we basically have 2 main cases with 2 sub-cases, where the main cases are dependant on whether the dates are equal or not:
-    // dates are equal
-    //      dateUsageTracker = 1 (using existing date second time)
-    //      dateUsageTracker > 1 (using existing date > 2 times)
-    // dates are not equal
-    //      dateUsageTracker = 1 (basically new date but this is first time function was ever called, or last version was also 1)
-    //      dateUsageTracker > 1 (basically new date but previous version was > 1)
-
-    //formatting the sequenceNumber string to ensure congruence, I don't anticipate us testing more than 999 times in a day
+    //formatting the sequenceNumber string to ensure congruence,
+    //I don't anticipate us testing more than 999 times in a day
     String sequenceNumber = String.format("%03d", dateUsageTracker);
     System.out.println("sequence number used for file name is " + sequenceNumber);
 
     // concatenates the filename
-    String generatedFileName = newDate + sequenceNumber + "-" + SharedInfo.env + "-" + SharedInfo.projectName + "-" + SharedInfo.testName;
+    String generatedFileName = newDate
+        + sequenceNumber + "-"
+        + SharedInfo.env + "-"
+        + SharedInfo.projectName
+        + "-" + SharedInfo.testName;
 
     // writes the used date along with the sequence number into dateTracker.csv
     File fileOut = new File(testDataExcelPath + SharedInfo.dateTrackerFileName);
@@ -160,11 +162,14 @@ public class ExcelUtil {
     return generatedFileName;
   }
 
-  // This method helps setup all the files that get read and written to
-  // We are mainly dealing with 3 files:
-  // - testDataExcelFileName is the name of the file responsible for test data, we only read from this file
-  // - testResultsExcelFileName is a csv file we generate every time a test is run, it stores the test results from testing
-  // - dateTrackerFileName is a csv file keeping track of date and version number which then gets used for testResultsExcelFileName, this is dealt with in the generateFileName() method
+  //This method helps setup all the files that get read and written to
+  //We are mainly dealing with 3 files:
+  //- projectTestData is the name of the file responsible for test data, this is read-only
+  //- a results csv file we generate every time a test is run,
+  //  it stores the test results. Here we're mainly setting up the headers for that file.
+  //- dateTrackerFileName is a csv file keeping track of date and version number
+  //  which then gets used for testResultsExcelFileName,
+  //  this is dealt with in the generateFileName() method
   public static String csvFile = "";
   public static String csvHeader = "";
   public static void setTestExcelData() {
@@ -179,7 +184,9 @@ public class ExcelUtil {
 
     try {
       //setting up access to the testData file, also counting how many test accounts there are
-      FileInputStream dataFIS = new FileInputStream(testDataExcelPath + SharedInfo.testDataExcelFileName);
+      FileInputStream dataFIS = new FileInputStream(
+          testDataExcelPath + SharedInfo.testDataExcelFileName);
+
       testDataWBook = new XSSFWorkbook(dataFIS);
       testDataWSheet = testDataWBook.getSheet("Sheet1");
       SharedInfo.credentialsCount = testDataWSheet.getLastRowNum() + 1;
@@ -220,7 +227,8 @@ public class ExcelUtil {
     }
   }
 
-  //below are methods for writing csv files, starting with deciding what the header of the csv file will be
+  //below are methods for writing csv files,
+  //starting with deciding what the header of the csv file will be
   public static String WriteCsvHeader(String[] headers) {
     StringBuilder csvHeader = new StringBuilder();
     int totalHeaders = headers.length;

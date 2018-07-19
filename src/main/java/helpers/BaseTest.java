@@ -266,7 +266,7 @@ public class BaseTest {
       }
       writeData(
           "",
-          "", 
+          "",
           "Environment is "
               + SharedInfo.env + " the sponsor is "
               + sponsor + " and the credentials used are "
