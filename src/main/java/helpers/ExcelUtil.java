@@ -64,20 +64,20 @@ public class ExcelUtil {
     return columnNumber;
   }
 
-  //The generateFileName() method is used to generate the correct file name for dateTrackerFileName,
+  //the generateFileName() method is used to generate the correct file name for dateTrackerFileName,
   //it also manages the dateTracker.csv file,
   //which helps determines the dateTrackerFileName based on version # and date
   public static String dateUsed = "";
   public static int dateUsageTracker = 1;
   public static String[] dataRead = {};
   public static String generateFileName() {
-    // Create object of SimpleDateFormat class and decide the format
+    //create object of SimpleDateFormat class and decide the format
     DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd-");
 
     //get current date time with Date()
     Date date = new Date();
 
-    // Now format the date
+    //now format the date
     String newDate = dateFormat.format(date);
 
     BufferedReader br = null;
@@ -130,14 +130,14 @@ public class ExcelUtil {
     String sequenceNumber = String.format("%03d", dateUsageTracker);
     System.out.println("sequence number used for file name is " + sequenceNumber);
 
-    // concatenates the filename
+    //concatenates the filename
     String generatedFileName = newDate
         + sequenceNumber + "-"
         + SharedInfo.env + "-"
-        + SharedInfo.projectName
-        + "-" + SharedInfo.testName;
+        + SharedInfo.projectName + "-"
+        + SharedInfo.testName;
 
-    // writes the used date along with the sequence number into dateTracker.csv
+    //writes the used date along with the sequence number into dateTracker.csv
     File fileOut = new File(testDataExcelPath + SharedInfo.dateTrackerFileName);
     BufferedWriter bw = null;
     try {
@@ -162,8 +162,8 @@ public class ExcelUtil {
     return generatedFileName;
   }
 
-  //This method helps setup all the files that get read and written to
-  //We are mainly dealing with 3 files:
+  //this method helps setup all the files that get read and written to
+  //we are mainly dealing with 3 files:
   //- projectTestData is the name of the file responsible for test data, this is read-only
   //- a results csv file we generate every time a test is run,
   //  it stores the test results. Here we're mainly setting up the headers for that file.
@@ -203,9 +203,9 @@ public class ExcelUtil {
     csvHeader = WriteCsvHeader(new String[]{"Time", "Test Feature", "Status", "Comments"});
   }
 
-  //This method reads the test data from the Excel cell.
-  //We are passing row number and column number as parameters.
-  //Remember that we start counting from 0s.
+  //this method reads the test data from the Excel cell
+  //we are passing row number and column number as parameters
+  //remember that we start counting from 0s
   public static String getCellData(int RowNum, int ColNum) {
     try {
       cell = testDataWSheet.getRow(RowNum).getCell(ColNum);
@@ -217,7 +217,7 @@ public class ExcelUtil {
     }
   }
 
-  //This method takes row number as a parameter and returns the data of given row number.
+  //this method takes row number as a parameter and returns the data of given row number
   public static XSSFRow getRowData(int RowNum) {
     try {
       row = testDataWSheet.getRow(RowNum);
@@ -269,7 +269,7 @@ public class ExcelUtil {
   public static void WriteToFile(String fileContent, String fileName) throws IOException {
     String tempFile = csvFile;
     File file = new File(tempFile);
-    // if file does exists, then delete and create a new file
+    //if file does exists, then delete and create a new file
     if (file.exists()) {
       try {
         File newFileName = new File(testResultsFilePath + "backup_" + fileName);

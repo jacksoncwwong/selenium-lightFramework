@@ -74,7 +74,7 @@ public class BaseTest {
     //and if so we update testFailChecker
     if( status.toUpperCase().equals("FAIL") || status.toUpperCase().equals("SKIPPED") ) {
       SharedInfo.testFailChecker = true;
-//            System.out.println("failure detected");
+//    System.out.println("failure detected");
     }
     //regardless we will insert the timestamp into our results
     ExcelUtil.WriteCsvRecords(new String[]{timeString, feature, status, comments});
